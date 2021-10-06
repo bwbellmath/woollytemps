@@ -100,8 +100,8 @@ while True:
             done = True
         else:
             done = False
-    if done:
-        print("All temps changed less than {} over last {} iterations".format(dtolerance, dinterval))
+    #if done:
+    #    print("All temps changed less than {} over last {} iterations".format(dtolerance, dinterval))
     print("{} : ({}) Ambient: {:0.2f}, Above: {:0.2f}, Below: {:0.2f} {} tdur:{:0.2f} done: {}".format(i, ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done))
     print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f},{} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_exp, "a"))
     print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f},{} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_cum, "a"))
