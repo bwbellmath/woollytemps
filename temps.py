@@ -69,6 +69,7 @@ durs = np.zeros(50000)
 i = 0
 done = False
 dinterval = 100
+cinterval = 10
 dtolerance = 1.0
 while True:
     #timenow = time.asctime
@@ -89,20 +90,21 @@ while True:
     tab[i] = temps["above"]
     tbe[i] = temps["below"]
     durs[i] = tdur
-    if i > 100 & i%dinterval == 0:
-        tam_mm = tam[i-dinterval:i].max() - tam[i-dinterval:i].min()
-        tab_mm = tab[i-dinterval:i].max() - tab[i-dinterval:i].min()
-        tbe_mm = tbe[i-dinterval:i].max() - tbe[i-dinterval:i].min()
+    if (i > dinterval) & (i%cinterval == 0):
+        tam_mm = tam[(i-dinterval):i].max() - tam[(i-dinterval):i].min()
+        tab_mm = tab[(i-dinterval):i].max() - tab[(i-dinterval):i].min()
+        tbe_mm = tbe[(i-dinterval):i].max() - tbe[(i-dinterval):i].min()
         print("Checking last {} intervals against temp tolerance: {}".format(dinterval, dtolerance))
-        if tam < dtolerance & tab < dtolerance & tbe < dtolerance:
+        print("Tolerances: Am {} Ab {} Be {}".format(tam_mm, tab_mm, tbe_mm))
+        if (tam_mm < dtolerance) & (tab_mm < dtolerance) & (tbe_mm < dtolerance):
             done = True
         else:
             done = False
     if done:
         print("All temps changed less than {} over last {} iterations".format(dtolerance, dinterval))
-    print("({}) Ambient: {:0.2f}, Above: {:0.2f}, Below: {:0.2f} {} tdur:{:0.2f} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done))
-    print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_exp, "a"))
-    print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_cum, "a"))
+    print("{} : ({}) Ambient: {:0.2f}, Above: {:0.2f}, Below: {:0.2f} {} tdur:{:0.2f} done: {}".format(i, ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done))
+    print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f},{} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_exp, "a"))
+    print("{},{:0.2f},{:0.2f},{:0.2f},{},{:0.2f},{} ".format(ename, temps["ambient"], temps["above"], temps["below"], tstring, tdur, done), file=open(log_cum, "a"))
     #print("timenow: {}, tstring: {}, duration: {}".format(timenow, tstring, tdur))
     
     #print("Breadboard Probe 1 = ", temperature_results[0], " C")
