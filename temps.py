@@ -91,6 +91,7 @@ while True:
     tbe[i] = temps["below"]
     durs[i] = tdur
     if (i > dinterval) & (i%cinterval == 0):
+        # compute a least squares fit to check for bias
         tam_mm = tam[(i-dinterval):i].max() - tam[(i-dinterval):i].min()
         tab_mm = tab[(i-dinterval):i].max() - tab[(i-dinterval):i].min()
         tbe_mm = tbe[(i-dinterval):i].max() - tbe[(i-dinterval):i].min()
