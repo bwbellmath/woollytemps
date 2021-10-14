@@ -6,6 +6,8 @@ import numpy as np
 import glob
 from datetime import datetime
 
+HUGE = 1000000000
+TEENY_WEENY = 0.0000001
 # prompt the user to name this experiment
 ename = input("Enter Experiment Name: ")
 
@@ -71,6 +73,7 @@ done = False
 dinterval = 100
 cinterval = 10
 dtolerance = 1.0
+depsilon = 0.0001
 while True:
     #timenow = time.asctime
     tstring = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
@@ -95,9 +98,15 @@ while True:
         tam_mm = tam[(i-dinterval):i].max() - tam[(i-dinterval):i].min()
         tab_mm = tab[(i-dinterval):i].max() - tab[(i-dinterval):i].min()
         tbe_mm = tbe[(i-dinterval):i].max() - tbe[(i-dinterval):i].min()
-        print("Checking last {} intervals against temp tolerance: {}".format(dinterval, dtolerance))
-        print("Tolerances: Am {} Ab {} Be {}".format(tam_mm, tab_mm, tbe_mm))
-        if (tam_mm < dtolerance) & (tab_mm < dtolerance) & (tbe_mm < dtolerance):
+        tam_m, tam_b = np.polyfit(durs[(i-dinterval):i], tam[(i-dinterval):i], 1)
+        tab_m, tab_b = np.polyfit(durs[(i-dinterval):i], tab[(i-dinterval):i], 1)
+        tbe_m, tbe_b = np.polyfit(durs[(i-dinterval):i], tbe[(i-dinterval):i], 1)
+        print("Checking last {} intervals. Temp tolerance: {}, epsilon: {}".format(dinterval, dtolerance, depsilon))
+        print("Tolerances:  Am {} Ab {} Be {}".format(tam_mm, tab_mm, tbe_mm))
+        print("Derivatives: Am {} Ab {} Be {}".format(tam_m, tab_m, tbe_m))
+        print("Intercepts:  Am {} Ab {} Be {}".format(tam_b, tab_b, tbe_b))
+        #(tam_mm < dtolerance) & (tab_mm < dtolerance) & (tbe_mm < dtolerance):
+        if (np.abs(tam_m) < depsilon) & (np.abs(tab_m) < depsilon) & (np.abs(tbe_m) < depsilon):
             done = True
         else:
             done = False
