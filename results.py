@@ -31,20 +31,23 @@ for experiment in experiments:
     di.loc[dis.index[i+dinterval], ["mab", "bab"]] = mab, bab
     di.loc[dis.index[i+dinterval], ["mbe", "bbe"]] = mbe, bbe
 
+  plt.figure(1)
   dis = di[di["Experiment"] == experiment]
   plt.plot(dis[" time_since_start"], dis[" Ambient"], color="blue")
   plt.plot(dis[" time_since_start"], dis[" Above"], color="red")  
   plt.plot(dis[" time_since_start"], dis[" Below"], color="orange")
   plt.title(experiment)
-  plt.show()
+  #plt.show()
 
   # separately plot the slopes
+  plt.figure(2)
   plt.plot(dis[" time_since_start"], dis["mam"], color="blue")
   plt.plot(dis[" time_since_start"], dis["mab"], color="red")  
   plt.plot(dis[" time_since_start"], dis["mbe"], color="orange")
   plt.title(F"{experiment}-slopes")
-  plt.show()
+  #plt.show()
   # separately plot the intercepts (adjust to make these means...)
+  plt.figure(3)
   plt.plot(dis[" time_since_start"], dis["bam"], color="blue")
   plt.plot(dis[" time_since_start"], dis["bab"], color="red")  
   plt.plot(dis[" time_since_start"], dis["bbe"], color="orange")
